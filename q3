@@ -1,0 +1,75 @@
+// 3. Program to delete a node from beginning, end, and specified position
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+    int data;
+    struct node *next;
+};
+struct node *deleteBeginning(struct node *head) {
+    if (head == NULL) return NULL;
+    struct node *temp = head;
+    head = head->next;
+    free(temp);
+    return head;
+}
+struct node *deleteEnd(struct node *head) {
+    if (head == NULL) return NULL;
+    if (head->next == NULL) {
+        free(head);
+        return NULL;
+    }
+    struct node *temp = head;
+    while (temp->next->next != NULL)
+        temp = temp->next;
+    free(temp->next);
+    temp->next = NULL;
+    return head;
+}
+struct node *deleteAtPos(struct node *head, int pos) {
+    if (head == NULL) return NULL;
+    if (pos == 1) {
+        struct node *temp = head;
+        head = head->next;
+        free(temp);
+        return head;
+    }
+    struct node *temp = head;
+    for (int i = 1; i < pos - 1 && temp->next != NULL; i++)
+        temp = temp->next;
+    if (temp->next == NULL) {
+        printf("Invalid position\n");
+        return head;
+    }
+    struct node *del = temp->next;
+    temp->next = del->next;
+    free(del);
+    return head;
+}
+void display(struct node *head) {
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+int main() {
+    struct node *head = NULL, *newnode, *temp;
+    for (int i = 1; i <= 5; i++) {
+        newnode = (struct node *)malloc(sizeof(struct node));
+        newnode->data = i * 10;
+        newnode->next = NULL;
+        if (head == NULL) head = temp = newnode;
+        else {
+            temp->next = newnode;
+            temp = newnode;
+        }
+    }
+    printf("Original list:\n");
+    display(head);
+    head = deleteBeginning(head);
+    head = deleteEnd(head);
+    head = deleteAtPos(head, 2);
+    printf("After deletions:\n");
+    display(head);
+    return 0;
+}
