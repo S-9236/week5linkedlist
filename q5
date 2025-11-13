@@ -1,0 +1,37 @@
+// 5. Program to search for a particular value in a linked list
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+    int data;
+    struct node *next;
+};
+void search(struct node *head, int key) {
+    int pos = 1, found = 0;
+    while (head != NULL) {
+        if (head->data == key) {
+            printf("Element %d found at position %d\n", key, pos);
+            found = 1;
+            break;
+        }
+        head = head->next;
+        pos++;
+    }
+    if (!found)
+        printf("Element %d not found\n", key);
+}
+int main() {
+    struct node *head = NULL, *newnode, *temp;
+    for (int i = 1; i <= 5; i++) {
+        newnode = (struct node *)malloc(sizeof(struct node));
+        newnode->data = i * 10;
+        newnode->next = NULL;
+        if (head == NULL) head = temp = newnode;
+        else {
+            temp->next = newnode;
+            temp = newnode;
+        }
+    }
+    search(head, 30);
+    search(head, 100);
+    return 0;
+}
