@@ -1,0 +1,60 @@
+// 2. Program to insert a new node at beginning, end, and specified position
+#include <stdio.h>
+#include <stdlib.h>
+struct node {
+    int data;
+    struct node *next;
+};
+struct node *insertBeginning(struct node *head, int data) {
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    newnode->data = data;
+    newnode->next = head;
+    return newnode;
+}
+struct node *insertEnd(struct node *head, int data) {
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    newnode->data = data;
+    newnode->next = NULL;
+    if (head == NULL) return newnode;
+    struct node *temp = head;
+    while (temp->next != NULL)
+        temp = temp->next;
+    temp->next = newnode;
+    return head;
+}
+struct node *insertAtPos(struct node *head, int data, int pos) {
+    struct node *newnode = (struct node *)malloc(sizeof(struct node));
+    newnode->data = data;
+    if (pos == 1) {
+        newnode->next = head;
+        return newnode;
+    }
+    struct node *temp = head;
+    for (int i = 1; i < pos - 1 && temp != NULL; i++)
+        temp = temp->next;
+    if (temp == NULL) {
+        printf("Invalid position\n");
+        free(newnode);
+        return head;
+    }
+    newnode->next = temp->next;
+    temp->next = newnode;
+    return head;
+}
+void display(struct node *head) {
+    while (head != NULL) {
+        printf("%d -> ", head->data);
+        head = head->next;
+    }
+    printf("NULL\n");
+}
+int main() {
+    struct node *head = NULL;
+    head = insertEnd(head, 10);
+    head = insertEnd(head, 20);
+    head = insertEnd(head, 30);
+    head = insertBeginning(head, 5);
+    head = insertAtPos(head, 15, 3);
+    display(head);
+    return 0;
+}
